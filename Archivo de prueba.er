@@ -1,0 +1,15 @@
+{
+// Conjuntos
+CONJ: letra -> a~z;
+CONJ: digito -> 0~9;
+<! Expresiones
+Regulares
+!>
+ExpReg1 -> . {letra} * | "_" | {letra} {digito};
+RegEx2 -> . {digito} * | "_" | {letra} {digito};
+ExpReg3 -> . {digito} . "." + {digito};
+%%
+%%
+ExpReg1 : “este_es_un_lexema_valido”;
+ExpReg3 : “34.44”;
+}
