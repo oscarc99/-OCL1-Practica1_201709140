@@ -5,10 +5,20 @@
  */
 package GUI;
 
+import Analizadores.AnalizadorLexico;
+import Objetos.Conjuntos;
+import Objetos.ExpresionesRegulares;
+import Objetos.Token;
+import java.awt.Desktop;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
+import java.io.IOException;
+import java.util.LinkedList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JFileChooser;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -19,6 +29,10 @@ public class Principal extends javax.swing.JFrame {
     /**
      * Creates new form Principal
      */
+    int contador = 0;
+    String ruta = "";
+    AnalizadorLexico a = new AnalizadorLexico();
+
     public Principal() {
         initComponents();
     }
@@ -36,7 +50,7 @@ public class Principal extends javax.swing.JFrame {
         jScrollPane1 = new javax.swing.JScrollPane();
         jTAArchivo = new javax.swing.JTextArea();
         jScrollPane2 = new javax.swing.JScrollPane();
-        jTextArea1 = new javax.swing.JTextArea();
+        jTextConsola = new javax.swing.JTextArea();
         jComboBox1 = new javax.swing.JComboBox();
         jComboBox2 = new javax.swing.JComboBox();
         jComboBox3 = new javax.swing.JComboBox();
@@ -62,9 +76,9 @@ public class Principal extends javax.swing.JFrame {
         jTAArchivo.setRows(5);
         jScrollPane1.setViewportView(jTAArchivo);
 
-        jTextArea1.setColumns(20);
-        jTextArea1.setRows(5);
-        jScrollPane2.setViewportView(jTextArea1);
+        jTextConsola.setColumns(20);
+        jTextConsola.setRows(5);
+        jScrollPane2.setViewportView(jTextConsola);
 
         jComboBox1.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
@@ -92,6 +106,11 @@ public class Principal extends javax.swing.JFrame {
         jButton2.setText("Siguiente");
 
         jButton3.setText("Analisis Lexico");
+        jButton3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton3ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -178,6 +197,11 @@ public class Principal extends javax.swing.JFrame {
 
         jMenuItem2.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_L, java.awt.event.InputEvent.CTRL_MASK));
         jMenuItem2.setText("Limpiar");
+        jMenuItem2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem2ActionPerformed(evt);
+            }
+        });
         jMenu1.add(jMenuItem2);
 
         jMenuBar1.add(jMenu1);
@@ -222,22 +246,21 @@ public class Principal extends javax.swing.JFrame {
         jf.showOpenDialog(this);
         File archivo = jf.getSelectedFile();
         if (archivo != null) {
-            String ruta = archivo.getAbsolutePath();
-            
-            try {
-            BufferedReader bf = new BufferedReader(new FileReader(ruta));
-            String temp = "";
-            String bfRead;
-            while ((bfRead = bf.readLine()) != null) {
-                temp = temp + bfRead + "\n";
-            }
+            ruta = archivo.getAbsolutePath();
 
-            this.jTAArchivo.setText(temp); 
-        } catch (Exception e) {
-            System.err.println("No se encontro el archivo");
-        }
-            
-            
+            try {
+                BufferedReader bf = new BufferedReader(new FileReader(ruta));
+                String temp = "";
+                String bfRead;
+                while ((bfRead = bf.readLine()) != null) {
+                    temp = temp + bfRead + "\n";
+                }
+
+                this.jTAArchivo.setText(temp);
+
+            } catch (Exception e) {
+                System.err.println("No se encontro el archivo");
+            }
 
         }
     }//GEN-LAST:event_jMenuItem1ActionPerformed
@@ -251,6 +274,51 @@ public class Principal extends javax.swing.JFrame {
     private void jComboBox3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox3ActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jComboBox3ActionPerformed
+
+    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+        if (jTAArchivo.getText().equals("")) {
+            JOptionPane.showMessageDialog(null, "Cargue archivo para generar reporte del analizador lexico");
+        } else {
+            try {
+                a.lexico(jTAArchivo.getText());
+                a.tablaErrores("src\\Reportes\\Errores" + contador + ".pdf");
+                a.tablaSimbolos("src\\Reportes\\Tokens" + contador + ".pdf");
+                File myFile = new File("src\\Reportes\\Errores" + contador + ".pdf");
+                Desktop.getDesktop().open(myFile);
+                File myFil = new File("src\\Reportes\\Tokens" + contador + ".pdf");
+                Desktop.getDesktop().open(myFil);
+            } catch (IOException ex) {
+                Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            contador++;
+            String conj = "";
+            LinkedList<Conjuntos> conjuntos = new LinkedList<Conjuntos>();
+            conjuntos = a.getConjuntos();
+            for (int i = 0; i < conjuntos.size(); i++) {
+                conj += "\n" + conjuntos.get(i).getNombre() + ": ";
+                for (int j = 0; j < conjuntos.get(i).getConjunt().size(); j++) {
+                    conj += conjuntos.get(i).getConjunt().get(j) + ", ";
+                }
+            }
+            
+            LinkedList<ExpresionesRegulares> exp = new LinkedList<ExpresionesRegulares>();
+            exp = a.getEr();
+            
+
+            for (int i = 0; i < exp.size(); i++) {
+                exp.get(i).getTree().report(i); 
+                conj += "\n" + exp.get(i).getNombre() + ": ";
+                for (int j = 0; j < exp.get(i).getTokens().size(); j++) {
+                    conj += exp.get(i).getTokens().get(j).getLexema();
+                }
+            }
+            this.jTextConsola.setText(conj);
+    }//GEN-LAST:event_jButton3ActionPerformed
+    }
+    private void jMenuItem2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem2ActionPerformed
+        jTAArchivo.setText("");
+        JOptionPane.showMessageDialog(null, "Operación realizada correctamente");
+    }//GEN-LAST:event_jMenuItem2ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -310,6 +378,6 @@ public class Principal extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JTextArea jTAArchivo;
-    private javax.swing.JTextArea jTextArea1;
+    private javax.swing.JTextArea jTextConsola;
     // End of variables declaration//GEN-END:variables
 }

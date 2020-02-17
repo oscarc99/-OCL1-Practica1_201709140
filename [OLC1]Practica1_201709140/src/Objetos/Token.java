@@ -5,6 +5,8 @@
  */
 package Objetos;
 
+import java.util.LinkedList;
+
 /**
  *
  * @author loosc
@@ -13,7 +15,24 @@ public class Token {
     String lexema;
     int token;
     String desc;
-
+    int id;
+    LinkedList<Integer> siguientes = new LinkedList<Integer>();
+    
+    public void addSiguiente(int i){
+        boolean existe=false;
+        for (int j = 0; j < siguientes.size(); j++) {
+            if(siguientes.get(j)==i){
+                existe = true;
+                break;
+            }
+        }
+        if(!existe){
+            siguientes.add(i);
+        }
+        
+    }
+    
+    
     public Token() {
     }
 
@@ -23,6 +42,14 @@ public class Token {
         this.desc = desc;
     }
 
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+  
     public String getDesc() {
         return desc;
     }

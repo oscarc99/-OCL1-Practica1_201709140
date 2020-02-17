@@ -1,0 +1,39 @@
+HOJAS [shape=record, label="{A|{F|S|L}|n}"];
+
+NODOS [shape=record, label="{A|{F|S|L}}"];
+
+public void graficarArbol(){
+        
+        this.ca = "";
+        this.graficarArbolRecursive(this.raiz);
+        
+        
+        File f;
+        FileWriter w;
+        BufferedWriter bw;
+        PrintWriter wr;
+        
+        try {
+            f = new File(this.nombre+"Arbol.dot");
+            w = new FileWriter(f);
+            bw = new BufferedWriter(w);
+            wr = new PrintWriter(bw);
+            
+            wr.write("digraph G {");
+            wr.write(this.ca);
+            wr.write("\n}");
+            
+            wr.close();
+            bw.close();
+            
+        } catch (Exception e) {
+        }
+        try {
+            ProcessBuilder p = new ProcessBuilder();
+             p.command("cmd.exe","/c" ,"dot.exe -Tpng "+this.nombre+"Arbol.dot"+" -o "+this.nombre+"Arbol.png");
+             p.start();
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+        
+    }

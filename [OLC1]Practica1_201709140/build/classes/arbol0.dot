@@ -1,0 +1,31 @@
+digraph G { 
+
+nodesep=0.8;
+
+ranksep=0.5;
+
+
+  
+letra[label=" letra " ];
+.->letra; 
+_[label=" _ " ];
+|->_; 
+letra[label=" letra " ];
+|->letra; 
+digito[label=" digito " ];
+|->digito; 
+|[label=" | " ];
+|->|; 
+|[label=" | " ];
+*->|; 
+*[label=" * " ];
+.->*; 
+.[label=" . " ];
+.->.; 
+#[label=" # " ];
+.->#; 
+.[label=" . " ];
+
+
+}
+
