@@ -1,6 +1,7 @@
 package EDD;
 
 import EDD.Nodo;
+import Objetos.Estado;
 import Objetos.Token;
 import java.io.FileWriter;
 import java.io.PrintWriter;
@@ -13,11 +14,17 @@ import java.util.LinkedList;
 public class Arbol {
 
     Lista siguientes = new Lista();
+    List transicion = new List();
     Nodo root;
-    Lista lista;
+    Lista lista;//Tokens del arbol
+    int estados = 0;
 
     public Arbol() {
 
+    }
+
+    public int getEstados() {
+        return estados;
     }
 
     public void setRoot(Nodo root) {
@@ -239,55 +246,135 @@ public class Arbol {
         }
     }
 
-    public void setTransiciones() {
-        
+    public void setSiguientes() {
+
         if (root != null) {
-        
-            transiciones(root);
+
+            siguientes(root);
 
         }
     }
 
-    private void transiciones(Nodo root) {
+    private void siguientes(Nodo root) {
         if (root != null) {
-            transiciones(root.getLeft());
-            transiciones(root.getRight());
+            siguientes(root.getLeft());
+            siguientes(root.getRight());
             if (root.getTok().getToken() == 15 || root.getTok().getToken() == 18) {//Si son ciclos (*, +)
                 //A los ultimos de este nodo les siguie los primeros de este mismo
                 for (int i = 0; i < siguientes.size(); i++) {
                     for (int j = 0; j < root.getUltimos().size(); j++) {
-                        if (siguientes.get(i).getId()== root.getUltimos().get(j)){
+                        if (siguientes.get(i).getId() == root.getUltimos().get(j)) {
                             for (int k = 0; k < root.getPrimeros().size(); k++) {
-                                
-                                
-                                siguientes.get(i).addSiguiente(root.getPrimeros().get(k)); 
-                                }
-                            
+
+                                siguientes.get(i).addSiguiente(root.getPrimeros().get(k));
+                            }
 
                         }
-                        
+
                     }
-                    
+
                 }
             } else if (root.getTok().getToken() == 16) {//Concatenacion
                 for (int i = 0; i < siguientes.size(); i++) {
                     for (int j = 0; j < root.getLeft().getUltimos().size(); j++) {
-                        if (siguientes.get(i).getId()== root.getLeft().getUltimos().get(j)){
+                        if (siguientes.get(i).getId() == root.getLeft().getUltimos().get(j)) {
                             for (int k = 0; k < root.getRight().getPrimeros().size(); k++) {
-                                siguientes.get(i).addSiguiente(root.getRight().getPrimeros().get(k)); 
-                                }
-                            
+                                siguientes.get(i).addSiguiente(root.getRight().getPrimeros().get(k));
+                            }
 
                         }
-                        
+
                     }
-                    
+
                 }
             } else {
                 //Ignora
-                System.out.println("Ignore a:" + root.getId() + " con "+ root.getTok().getLexema());
+                System.out.println("Ignore a:" + root.getId() + " con " + root.getTok().getLexema());
             }
 
         }
     }
+
+    public void setTransiciones() {
+        if (root != null) {
+            estados = 0;
+            setEstados();
+            transicion.trans(transicion.getSize());
+            transiciones();
+            
+            
+            
+            
+        }
+    }
+
+   public void transiciones(){
+       
+       
+       for (int i = 0; i < transicion.getSize(); i++) {
+           for (int j = 0; j < transicion.get_element_at(i).getConjunto().size() ; j++) {
+               for (int k = 0; k < siguientes.size(); k++) {
+                   if(transicion.get_element_at(i).getConjunto().get(j) == siguientes.get(k).getId() ) {
+                       int est =transicion.estado(siguientes.get(k).getSiguientes());
+                       transicion.get_element_at(i).setTransicion(est, transicion.get_element_at(i).getConjunto());
+                   }
+                   
+                   
+               }
+               
+           }
+           
+       }
+   }
+    
+
+    public void setEstados() {
+        estados = 0;
+        Estado s = new Estado("S" + estados, estados);
+        s.setConjunto(root.getPrimeros());
+
+        transicion.add_last(s);
+        estados++;//Nombre para los estados
+        int conteo = 1;
+
+        while (conteo != 0) {
+            conteo--;
+            for (int i = 0; i < transicion.getSize(); i++) {
+                for (int j = 0; j < transicion.get_element_at(i).getConjunto().size(); j++) {
+                    for (int k = 0; k < siguientes.size(); k++) {
+                        if (transicion.get_element_at(i).getConjunto().get(j) == siguientes.get(k).getId()) {
+                            if (!transicion.existe(siguientes.get(k).getSiguientes())) {
+                                s = new Estado("S" + estados, estados);
+                                s.setConjunto(siguientes.get(k).getSiguientes());
+                                transicion.add_last(s);
+                                conteo++;
+                                estados++;
+                            }
+
+                        }
+                    }
+                }
+
+            }
+        }
+        System.out.println("sali");
+    }
+
+    public boolean compare(LinkedList a, LinkedList b) {
+        if (a.size() == 0 || b.size() == 0) {
+            return true;
+        }
+        if (a.size() == b.size()) {
+            for (int i = 0; i < a.size(); i++) {
+                if (a.get(i) != b.get(i)) {
+                    return false;
+                }
+            }
+            return true;
+        } else {
+            return false;
+        }
+
+    }
+
 }

@@ -17,6 +17,12 @@ public class Token {
     String desc;
     int id;
     LinkedList<Integer> siguientes = new LinkedList<Integer>();
+    String estado;
+    int state;
+
+    public LinkedList<Integer> getSiguientes() {
+        return siguientes;
+    }
     
     public void addSiguiente(int i){
         boolean existe=false;

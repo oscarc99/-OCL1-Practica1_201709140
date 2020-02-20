@@ -418,7 +418,9 @@ public class AnalizadorLexico {
                     temp.getTree().identificar();
                     temp.getTree().setAnulable();
                     temp.getTree().setPrimUlt();
+                    temp.getTree().setSiguientes();
                     temp.getTree().setTransiciones();
+                    
                     er.add(temp);
 
                     bandera = false;

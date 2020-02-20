@@ -12,7 +12,7 @@ import java.util.LinkedList;
  *
  * @author loosc
  */
-public class NodoL {
+ public class NodoL {
     Token dato;
     private NodoL next;
     private NodoL before;
