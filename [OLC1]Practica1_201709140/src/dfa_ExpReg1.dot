@@ -1,0 +1,6 @@
+digraph G { 
+
+nodesep=0.8;
+
+ranksep=0.5;
+

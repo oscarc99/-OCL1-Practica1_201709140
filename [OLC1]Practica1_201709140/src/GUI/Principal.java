@@ -306,7 +306,10 @@ public class Principal extends javax.swing.JFrame {
             
 
             for (int i = 0; i < exp.size(); i++) {
-                exp.get(i).getTree().report(i); 
+                exp.get(i).getTree().report(exp.get(i).getNombre()); 
+                exp.get(i).reportSiguientes();
+                exp.get(i).reportTransicion();
+                exp.get(i).getTree().reporteDFA(exp.get(i).getNombre()); 
                 conj += "\n" + exp.get(i).getNombre() + ": ";
                 for (int j = 0; j < exp.get(i).getTokens().size(); j++) {
                     conj += exp.get(i).getTokens().get(j).getLexema();

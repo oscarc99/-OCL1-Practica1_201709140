@@ -22,6 +22,15 @@ public class Nodo {
     String identificador; //lexema del token
     Nodo left;
     Nodo right;
+    String graficar;
+
+    public String getGraficar() {
+        return graficar;
+    }
+
+    public void setGraficar(String graficar) {
+        this.graficar = graficar;
+    }
     
 
     public Nodo(Token tok) {

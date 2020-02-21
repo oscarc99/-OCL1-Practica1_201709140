@@ -1,0 +1,12 @@
+digraph G { 
+
+nodesep=0.8;
+
+ranksep=0.5;
+
+node [fontname="Arial"]; 
+node_A [shape=record  label=
+" {Hoja |{a|4}|{a|2}|{b|3}|{a|4}|{#|5}}|{Siguientes|5|2,3,4|2,3,4|5|} "]; 
+
+}
+

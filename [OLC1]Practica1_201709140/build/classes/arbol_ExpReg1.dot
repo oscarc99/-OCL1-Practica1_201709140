@@ -1,0 +1,31 @@
+digraph G { 
+
+nodesep=0.8;
+
+ranksep=0.5;
+
+
+  
+N0[shape=record label=" 1| { N| letra|1 } |1 " ];
+N7->N0; 
+N1[shape=record label=" 2,3,4| { N| _|2 } |2,3,4,1 " ];
+N5->N1; 
+N2[shape=record label=" 3,4| { N| letra|3 } |3,4 " ];
+N4->N2; 
+N3[shape=record label=" 4| { N| digito|4 } |4 " ];
+N4->N3; 
+N4[shape=record label=" 3,4| { N| ||0 } |3,4 " ];
+N5->N4; 
+N5[shape=record label=" 2,3,4| { N| ||0 } |2,3,4,1 " ];
+N6->N5; 
+N6[shape=record label=" 2,3,4| { A| *|0 } |2,3,4,1 " ];
+N7->N6; 
+N7[shape=record label=" 1| { N| .|0 } |2,3,4,1 " ];
+N9->N7; 
+N8[shape=record label=" 5| { N| #|5 } |5 " ];
+N9->N8; 
+N9[shape=record label=" 1| { N| .|0 } |5 " ];
+
+
+}
+

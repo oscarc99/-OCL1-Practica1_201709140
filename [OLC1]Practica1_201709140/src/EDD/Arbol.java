@@ -16,8 +16,20 @@ public class Arbol {
     Lista siguientes = new Lista();
     List transicion = new List();
     Nodo root;
+    
     Lista lista;//Tokens del arbol
-    int estados = 0;
+    private int estados = 0;
+    private int contador = 1;
+    private int ayuda=0;
+
+    public Lista getSiguientes() {
+        return siguientes;
+        
+    }
+
+    public List getTransicion() {
+        return transicion;
+    }
 
     public Arbol() {
 
@@ -80,13 +92,37 @@ public class Arbol {
 
         if (Raiz.getLeft() != null) {
             Retorno += Graph(Raiz.getLeft());
-            Retorno += Raiz.getTok().getLexema() + "->" + Raiz.getLeft().getTok().getLexema() + "; \n";
+            Retorno += Raiz.getGraficar()+ "->" + Raiz.getLeft().getGraficar()+ "; \n";
         }
         if (Raiz.getRight() != null) {
             Retorno += Graph(Raiz.getRight());
-            Retorno += Raiz.getTok().getLexema() + "->" + Raiz.getRight().getTok().getLexema() + "; \n";
+            Retorno += Raiz.getGraficar()+ "->" + Raiz.getRight().getGraficar() + "; \n";
         }
-        return Retorno + Raiz.getTok().getLexema() + "[label=\" " + Raiz.getTok().getLexema() + " \" ];\n";
+        String nodo ="";
+        //Agrego primeros
+        for (int i = 0; i < Raiz.getPrimeros().size(); i++) {
+            if(i == 0){
+                nodo +=  Raiz.getPrimeros().get(i); 
+            }else{
+                nodo +=","+  Raiz.getPrimeros().get(i); 
+            }
+            
+        }
+        if(Raiz.isAnulable()){
+            nodo+="| { A";
+        }else{
+            nodo+="| { N";
+        }
+        nodo+= "| "+Raiz.getTok().getLexema();
+        nodo += "|"+ Raiz.getId()+" } |";
+        for (int i = 0; i < Raiz.getUltimos().size(); i++) {
+            if(i == 0){
+                nodo +=  Raiz.getUltimos().get(i); 
+            }else{
+                nodo +=","+  Raiz.getUltimos().get(i); 
+            }
+        }
+        return Retorno + Raiz.getGraficar() + "[shape=record label=\" " +nodo+" \" ];\n";
 
     }
 
@@ -98,17 +134,18 @@ public class Arbol {
         }
     }
 
-    public void report(int i) {
+    public void report(String i) {
         FileWriter fichero = null;
         PrintWriter pw = null;
         try {
-            fichero = new FileWriter("src\\arbol" + i + ".dot");
+            fichero = new FileWriter("src\\arbol_" + i + ".dot");
 
             pw = new PrintWriter(fichero);
 
             pw.println("digraph G { \n");
             pw.println("nodesep=0.8;\n");
             pw.println("ranksep=0.5;\n");
+            g();
             pw.println(graficar());
             pw.println("}\n");
 
@@ -126,15 +163,13 @@ public class Arbol {
             }
         }
         try {
-            Process p = Runtime.getRuntime().exec("cmd /c dot.exe -Tpng src\\arbol" + i + ".dot -o src\\arbol" + i + ".png");
+            Process p = Runtime.getRuntime().exec("cmd /c dot.exe -Tpng src\\arbol_" + i + ".dot -o src\\arbol_" + i + ".png");
 //            Process pa = Runtime.getRuntime().exec("cmd /c src\\Imagenes\\AVLTree.png");
         } catch (Exception e2) {
             e2.printStackTrace();
         }
 
     }
-
-    int contador = 1;
 
     public void identificar(Nodo root) {
 
@@ -301,32 +336,26 @@ public class Arbol {
             setEstados();
             transicion.trans(transicion.getSize());
             transiciones();
-            
-            
-            
-            
+
         }
     }
 
-   public void transiciones(){
-       
-       
-       for (int i = 0; i < transicion.getSize(); i++) {
-           for (int j = 0; j < transicion.get_element_at(i).getConjunto().size() ; j++) {
-               for (int k = 0; k < siguientes.size(); k++) {
-                   if(transicion.get_element_at(i).getConjunto().get(j) == siguientes.get(k).getId() ) {
-                       int est =transicion.estado(siguientes.get(k).getSiguientes());
-                       transicion.get_element_at(i).setTransicion(est, transicion.get_element_at(i).getConjunto());
-                   }
-                   
-                   
-               }
-               
-           }
-           
-       }
-   }
-    
+    public void transiciones() {
+
+        for (int i = 0; i < transicion.getSize(); i++) {
+            for (int j = 0; j < transicion.get_element_at(i).getConjunto().size(); j++) {
+                for (int k = 0; k < siguientes.size(); k++) {
+                    if (transicion.get_element_at(i).getConjunto().get(j) == siguientes.get(k).getId()) {
+                        int est = transicion.estado(siguientes.get(k).getSiguientes());
+                        transicion.get_element_at(i).setTransicion(est, transicion.get_element_at(i).getConjunto());
+                    }
+
+                }
+
+            }
+
+        }
+    }
 
     public void setEstados() {
         estados = 0;
@@ -376,5 +405,110 @@ public class Arbol {
         }
 
     }
+    
+    public String lexema(int a){
+        for (int i = 0; i < siguientes.size(); i++) {
+            if(siguientes.get(i).getId() == a){
+                return siguientes.get(i).getLexema();
+            }
+        }
+        return "";
+    }
+    
+    
+    private void g(){
+        if (root!= null){
+            ayuda=0;
+            g(root);
+        }
+    }
+    
+    private void g(Nodo root) {
+        
+        if(root != null){
+            g(root.getLeft());
+            g(root.getRight());
+            root.setGraficar("N"+ayuda);
+            ayuda++;
+                        
+        }
+        
+    }
+    
+    public void reporteDFA(String i){
+        FileWriter fichero = null;
+        PrintWriter pw = null;
+        try {
+            fichero = new FileWriter("src\\dfa_" + i + ".dot");
 
+            pw = new PrintWriter(fichero);
+
+            pw.println("digraph G { \n");
+            pw.println("nodesep=0.8;\n");
+            pw.println("ranksep=0.5;\n");
+            
+            pw.println(DFA());
+            pw.println("}\n");
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                // Nuevamente aprovechamos el finally para 
+                // asegurarnos que se cierra el fichero.
+                if (null != fichero) {
+                    fichero.close();
+                }
+            } catch (Exception e2) {
+                e2.printStackTrace();
+            }
+        }
+        try {
+            Process p = Runtime.getRuntime().exec("cmd /c dot.exe -Tpng src\\dfa_" + i + ".dot -o src\\dfa_" + i + ".png");
+//            Process pa = Runtime.getRuntime().exec("cmd /c src\\Imagenes\\AVLTree.png");
+        } catch (Exception e2) {
+            e2.printStackTrace();
+        }
+    }
+    
+    private String DFA(){
+        String dot ="";
+        String nodos="";
+        boolean aceptacion =false;
+        String dir="";
+        for (int i = 0; i < transicion.getSize(); i++) {
+            for (int j = 0; j < transicion.get_element_at(i).getTransicion().length; j++) {
+                for (int k = 0; k < transicion.get_element_at(i).getTransicion()[j].size() ; k++) {
+                    if(transicion.get_element_at(i).getTransicion()[j].get(k)== siguientes.size() ){
+                    aceptacion =true;
+                    }
+                }
+
+                    
+                }
+            }
+            if(aceptacion){
+                nodos += transicion.get_element_at(i).getId() +"[shape= \"doublecircle\"  label = \" "+transicion.get_element_at(i).getId()+"\" ] \n";
+            }else{
+                nodos += transicion.get_element_at(i).getId() +"[shape= \"circle\"  label = \" "+transicion.get_element_at(i).getId()+"\" ] \n";
+            }
+            aceptacion = false;
+            for (int j = 0; j < transicion.get_element_at(i).getTransicion().length; j++) {
+                
+                dir +="";
+                //estado(LinkedList) METODO SABER EL ESTADO ID(int)
+                
+                
+            }
+            
+            
+        }
+        
+        
+        dot += nodos+ dir;
+        return dot;
+    }
+    
+    
+    
 }

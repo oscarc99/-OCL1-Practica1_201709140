@@ -12,10 +12,18 @@ public class Estado {
     String id;
     int identificador;
     LinkedList<Integer> transicion[];
-    
+
     LinkedList<Integer> conjunto = new LinkedList<Integer>();//Terminales que le pertenecen
 
     public Estado() {
+    }
+
+    public LinkedList<Integer>[] getTransicion() {
+        return transicion;
+    }
+
+    public LinkedList getT(int x) {
+        return transicion[x];
     }
 
     public Estado(String id, int identificador) {
@@ -47,19 +55,16 @@ public class Estado {
         this.conjunto = conjunto;
     }
 
- 
-    public void add(int a){
+    public void add(int a) {
         conjunto.add(a);
     }
-    
-    public void transiciones(int n){
-        transicion = new LinkedList[n]; 
-    }
-    
-    
-    public void setTransicion(int n, LinkedList<Integer> lista){
-        transicion[n] = lista;
+
+    public void transiciones(int n) {
+        transicion = new LinkedList[n];
     }
 
+    public void setTransicion(int n, LinkedList<Integer> lista) {
+        transicion[n] = lista;
+    }
 
 }

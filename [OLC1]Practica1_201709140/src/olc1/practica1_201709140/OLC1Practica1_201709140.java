@@ -19,13 +19,14 @@ import java.util.LinkedList;
  * @author loosc
  */
 public class OLC1Practica1_201709140 {
-
+int a;
     /**
      * @param args the command line arguments
      */
     public static void main(String[] args) throws IOException {
-        Principal v = new Principal();
-        v.setVisible(true);
+        System.out.println("MIERDA");
+        s=0;
+        System.out.println(a);
     }
     
 }

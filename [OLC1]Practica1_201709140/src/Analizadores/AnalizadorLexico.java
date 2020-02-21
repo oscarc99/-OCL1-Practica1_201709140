@@ -5,6 +5,7 @@ import Objetos.Conjuntos;
 import Objetos.Token;
 import Objetos.Error;
 import Objetos.ExpresionesRegulares;
+import Objetos.Lexema;
 import com.itextpdf.kernel.geom.PageSize;
 import com.itextpdf.kernel.pdf.PdfDocument;
 import com.itextpdf.kernel.pdf.PdfWriter;
@@ -27,6 +28,7 @@ public class AnalizadorLexico {
     LinkedList<Token> salida = new LinkedList<Token>();
     LinkedList<Conjuntos> conjuntos = new LinkedList<Conjuntos>();
     LinkedList<ExpresionesRegulares> er = new LinkedList<ExpresionesRegulares>();
+    LinkedList<Lexema> lexemas = new LinkedList<Lexema>();
     int estado = 0;
     String auxLex = "";
 
@@ -35,9 +37,9 @@ public class AnalizadorLexico {
     }
 
     public AnalizadorLexico() {
-        errores = new LinkedList<Error>();
-        salida = new LinkedList<Token>();
-        conjuntos = new LinkedList<Conjuntos>();
+    errores = new LinkedList<Error>();
+       salida = new LinkedList<Token>();
+       conjuntos = new LinkedList<Conjuntos>();
         er = new LinkedList<ExpresionesRegulares>();
 
     }
@@ -92,6 +94,7 @@ public class AnalizadorLexico {
                     } else if (caracteres[i] == '"') {
                         //Ir a estado 10 cadena o lexema
                         estado = 9;
+                        
                     } else if (caracteres[i] == '/') {
                         //Ir a estado 1 para comentario una linea
                         auxLex += String.valueOf(caracteres[i]);
@@ -236,6 +239,8 @@ public class AnalizadorLexico {
                 case 9:
                     if (caracteres[i] == '"') {
                         addToken(auxLex, 11, "Cadena");
+                        
+                        
                     } else {
                         auxLex += String.valueOf(caracteres[i]);
                     }
@@ -258,6 +263,7 @@ public class AnalizadorLexico {
         }
         guardarConjuntos();
         guardarER();
+        guardarLex();
     }
 
     private boolean isDigit(char c) {
@@ -436,6 +442,15 @@ public class AnalizadorLexico {
             }
         }
 
+    }
+
+    private void guardarLex() {
+        for (int i = 0; i < salida.size(); i++) {
+            if(salida.get(i).getToken()==11 && salida.get(i-1).getToken()==9){
+                
+                lexemas.add(new Lexema(salida.get(i),salida.get(i-2).getLexema()));
+            }
+        }
     }
 
 }

@@ -74,8 +74,6 @@ public class List {
         }
     }
 
-    
-
     public void add_last(Estado dato) {
         if (isEmpty()) {
             add_first(dato);
