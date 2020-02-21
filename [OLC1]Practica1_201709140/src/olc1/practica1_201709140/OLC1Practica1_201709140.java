@@ -13,21 +13,24 @@ import java.awt.Desktop;
 import java.io.File;
 import java.io.IOException;
 import java.util.LinkedList;
+import java.util.Scanner;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
  * @author loosc
  */
 public class OLC1Practica1_201709140 {
-int a;
+
+    
+
     /**
      * @param args the command line arguments
      */
-    public static void main(String[] args) throws IOException {
-        
-        
+    public static void main(String[] args) {
         Principal v = new Principal();
         v.setVisible(true); 
     }
-    
+
 }

@@ -23,7 +23,7 @@ public class Lexema {
         this.identificador = identificador;
     }
 
-    public String getToken() {
+    public String getCadena() {
         return cadena;
     }
 
@@ -31,7 +31,7 @@ public class Lexema {
         return identificador;
     }
 
-    public void setToken(String token) {
+    public void setName(String token) {
         this.cadena = token;
     }
 

@@ -1,0 +1,12 @@
+digraph G { 
+
+nodesep=0.8;
+
+ranksep=0.5;
+
+node [fontname="Arial"]; 
+node_A [shape=record  label=
+ "{Estados| S0 \{ 1,2,3,4\}}| { S0| }} "]; 
+
+}
+

@@ -17,8 +17,13 @@ import java.io.IOException;
 import java.util.LinkedList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
+import javax.swing.JTree;
+import javax.swing.tree.DefaultTreeModel;
+import javax.swing.tree.DefaultMutableTreeNode;
+import javax.swing.tree.TreePath;
 
 /**
  *
@@ -29,9 +34,10 @@ public class Principal extends javax.swing.JFrame {
     /**
      * Creates new form Principal
      */
-    int contador = 0;
-    String ruta = "";
-    AnalizadorLexico a = new AnalizadorLexico();
+    private int contador = 0;
+    private String ruta = "";
+    private AnalizadorLexico a = new AnalizadorLexico();
+    private boolean analizo = false;
 
     public Principal() {
         initComponents();
@@ -51,17 +57,13 @@ public class Principal extends javax.swing.JFrame {
         jTAArchivo = new javax.swing.JTextArea();
         jScrollPane2 = new javax.swing.JScrollPane();
         jTextConsola = new javax.swing.JTextArea();
-        jComboBox1 = new javax.swing.JComboBox();
-        jComboBox2 = new javax.swing.JComboBox();
-        jComboBox3 = new javax.swing.JComboBox();
-        jComboBox4 = new javax.swing.JComboBox();
-        jLabel1 = new javax.swing.JLabel();
-        jLabel2 = new javax.swing.JLabel();
-        jLabel3 = new javax.swing.JLabel();
-        jLabel4 = new javax.swing.JLabel();
-        jButton1 = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
         jButton3 = new javax.swing.JButton();
+        jG = new javax.swing.JButton();
+        jScrollPane3 = new javax.swing.JScrollPane();
+        jTree1 = new javax.swing.JTree();
+        jScrollPane4 = new javax.swing.JScrollPane();
+        image = new javax.swing.JLabel();
+        jSelectI = new javax.swing.JButton();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
         jMenuItem1 = new javax.swing.JMenuItem();
@@ -80,35 +82,33 @@ public class Principal extends javax.swing.JFrame {
         jTextConsola.setRows(5);
         jScrollPane2.setViewportView(jTextConsola);
 
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-
-        jComboBox2.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-
-        jComboBox3.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-        jComboBox3.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jComboBox3ActionPerformed(evt);
-            }
-        });
-
-        jComboBox4.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-
-        jLabel1.setText("Arboles");
-
-        jLabel2.setText("Tabla de Siguientes");
-
-        jLabel3.setText("Tabla de Transiciones");
-
-        jLabel4.setText("Automatas");
-
-        jButton1.setText("Anterior");
-
-        jButton2.setText("Siguiente");
-
         jButton3.setText("Analisis Lexico");
         jButton3.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton3ActionPerformed(evt);
+            }
+        });
+
+        jG.setText("Generar");
+        jG.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jGActionPerformed(evt);
+            }
+        });
+
+        jTree1.addTreeSelectionListener(new javax.swing.event.TreeSelectionListener() {
+            public void valueChanged(javax.swing.event.TreeSelectionEvent evt) {
+                jTree1ValueChanged(evt);
+            }
+        });
+        jScrollPane3.setViewportView(jTree1);
+
+        jScrollPane4.setViewportView(image);
+
+        jSelectI.setText("Seleccionar");
+        jSelectI.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jSelectIActionPerformed(evt);
             }
         });
 
@@ -117,71 +117,51 @@ public class Principal extends javax.swing.JFrame {
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                .addGap(29, 29, 29)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(29, 29, 29)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 323, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(12, 12, 12)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addComponent(jButton3)
                                 .addGap(30, 30, 30)
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jLabel3)
-                                    .addComponent(jLabel2)
-                                    .addComponent(jLabel4)))
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addGap(50, 50, 50)
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                    .addComponent(jButton3)
-                                    .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jComboBox2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jComboBox4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jComboBox3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addGap(46, 46, 46)
-                                .addComponent(jButton1)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(jButton2)
-                                .addGap(33, 33, 33))))
+                                .addComponent(jG, javax.swing.GroupLayout.PREFERRED_SIZE, 101, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 840, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addContainerGap(109, Short.MAX_VALUE))
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(56, 56, 56)
-                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 723, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(24, Short.MAX_VALUE))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addGap(0, 0, Short.MAX_VALUE)
-                .addComponent(jLabel1)
-                .addGap(377, 377, 377))
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 323, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(50, 50, 50)
+                        .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 139, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addGap(46, 46, 46)
+                                .addComponent(jScrollPane4)
+                                .addContainerGap())
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addGap(195, 195, 195)
+                                .addComponent(jSelectI)
+                                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGap(22, 22, 22)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(22, 22, 22)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 384, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(jLabel1)
-                        .addGap(11, 11, 11)
-                        .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 384, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
-                        .addComponent(jLabel2)
-                        .addGap(18, 18, 18)
-                        .addComponent(jComboBox2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jLabel3)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jComboBox3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jLabel4)
-                        .addGap(23, 23, 23)
-                        .addComponent(jComboBox4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(37, 37, 37)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jButton1)
-                            .addComponent(jButton2)
-                            .addComponent(jButton3))))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 32, Short.MAX_VALUE)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(30, 30, 30))
+                            .addComponent(jButton3)
+                            .addComponent(jG)))
+                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                        .addGroup(jPanel1Layout.createSequentialGroup()
+                            .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 337, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jSelectI))
+                        .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 396, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 27, Short.MAX_VALUE)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 74, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(42, 42, 42))
         );
 
         jMenu1.setText("Archivo");
@@ -229,7 +209,7 @@ public class Principal extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, Short.MAX_VALUE))
+                .addGap(0, 21, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -271,9 +251,59 @@ public class Principal extends javax.swing.JFrame {
         v.setVisible(true);
     }//GEN-LAST:event_jMenuItem3ActionPerformed
 
-    private void jComboBox3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox3ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jComboBox3ActionPerformed
+    private void jMenuItem2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem2ActionPerformed
+        jTAArchivo.setText("");
+
+        JOptionPane.showMessageDialog(null, "Operación realizada correctamente");
+    }//GEN-LAST:event_jMenuItem2ActionPerformed
+
+    private void jGActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jGActionPerformed
+        if (analizo) {
+            DefaultMutableTreeNode raiz = new DefaultMutableTreeNode("Automatas");
+            DefaultMutableTreeNode tree = new DefaultMutableTreeNode("Arboles");
+            DefaultMutableTreeNode sig = new DefaultMutableTreeNode("Tabla de Siguientes");
+            DefaultMutableTreeNode trans = new DefaultMutableTreeNode("Tabla de Trasiciones");
+            DefaultMutableTreeNode dfa = new DefaultMutableTreeNode("AFD");
+            raiz.add(sig);
+            raiz.add(tree);
+            raiz.add(trans);
+            raiz.add(dfa);
+            LinkedList<ExpresionesRegulares> exp = new LinkedList<ExpresionesRegulares>();
+            exp = a.getEr();
+
+            for (int i = 0; i < exp.size(); i++) {
+                DefaultMutableTreeNode arbolER = new DefaultMutableTreeNode("arbol_" + exp.get(i).getNombre());
+                DefaultMutableTreeNode sigER = new DefaultMutableTreeNode("siguientes_" + exp.get(i).getNombre());
+                DefaultMutableTreeNode transER = new DefaultMutableTreeNode("transicion_" + exp.get(i).getNombre());
+                DefaultMutableTreeNode dfaER = new DefaultMutableTreeNode("dfa_" + exp.get(i).getNombre());
+
+                tree.add(arbolER);
+                sig.add(sigER);
+                trans.add(transER);
+                dfa.add(dfaER);
+            }
+
+            DefaultTreeModel r = new DefaultTreeModel(raiz);
+
+            jTree1.setModel(r);
+
+            jTree1.revalidate();
+            jTree1.validate();
+            jTree1.validate();
+
+            jPanel1.revalidate();
+            jPanel1.validate();
+            jPanel1.repaint();
+            this.revalidate();
+            this.validate();
+            this.repaint();
+
+        } else {
+            JOptionPane.showMessageDialog(null, "Realice el analisis para generar imagenes");
+        }
+
+
+    }//GEN-LAST:event_jGActionPerformed
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
         if (jTAArchivo.getText().equals("")) {
@@ -285,7 +315,7 @@ public class Principal extends javax.swing.JFrame {
                 a.tablaSimbolos("src\\Reportes\\Tokens" + contador + ".pdf");
                 File myFile = new File("src\\Reportes\\Errores" + contador + ".pdf");
                 Desktop.getDesktop().open(myFile);
-                File myFil = new File("src\\Reportes\\Tokens" + contador + ".pdf");
+                File myFil = new File("C:\\Users\\loosc\\OneDrive\\Escritorio\\Practica1\\Tokens" + contador + ".pdf");
                 Desktop.getDesktop().open(myFil);
             } catch (IOException ex) {
                 Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
@@ -300,28 +330,129 @@ public class Principal extends javax.swing.JFrame {
                     conj += conjuntos.get(i).getConjunt().get(j) + ", ";
                 }
             }
-            
+
             LinkedList<ExpresionesRegulares> exp = new LinkedList<ExpresionesRegulares>();
             exp = a.getEr();
-            
 
             for (int i = 0; i < exp.size(); i++) {
-                exp.get(i).getTree().report(exp.get(i).getNombre()); 
+
+                exp.get(i).getTree().report(exp.get(i).getNombre());
                 exp.get(i).reportSiguientes();
                 exp.get(i).reportTransicion();
-                exp.get(i).getTree().reporteDFA(exp.get(i).getNombre()); 
+                exp.get(i).getTree().reporteDFA(exp.get(i).getNombre());
                 conj += "\n" + exp.get(i).getNombre() + ": ";
                 for (int j = 0; j < exp.get(i).getTokens().size(); j++) {
                     conj += exp.get(i).getTokens().get(j).getLexema();
                 }
             }
             this.jTextConsola.setText(conj);
+            analizo = true;
+        }
     }//GEN-LAST:event_jButton3ActionPerformed
-    }
-    private void jMenuItem2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem2ActionPerformed
-        jTAArchivo.setText("");
-        JOptionPane.showMessageDialog(null, "Operación realizada correctamente");
-    }//GEN-LAST:event_jMenuItem2ActionPerformed
+
+    private void jTree1ValueChanged(javax.swing.event.TreeSelectionEvent evt) {//GEN-FIRST:event_jTree1ValueChanged
+
+    }//GEN-LAST:event_jTree1ValueChanged
+  
+    private void jSelectIActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jSelectIActionPerformed
+        String aux = "";
+        TreePath tp = jTree1.getSelectionPath();
+        DefaultMutableTreeNode tm = (DefaultMutableTreeNode) tp.getLastPathComponent();
+
+        if (tm.getUserObject().toString().startsWith("arbol_")) {
+            
+            for (int i = 0; i < a.getEr().size(); i++) {
+                aux = "arbol_" + a.getEr().get(i).getNombre();
+
+                if (aux.equals(tm.getUserObject().toString())) {
+                    
+                    ImageIcon icono = new ImageIcon("src\\" + aux + ".png");
+                    icono.getImage().flush();
+                    image.setIcon(icono);
+                    image.revalidate();
+                    image.validate();
+                    image.repaint();
+
+                    jScrollPane1.revalidate();
+                    jScrollPane1.validate();
+                    jScrollPane1.repaint();
+                    return;
+                }
+            }
+
+        } else if (tm.getUserObject().toString().startsWith("siguientes_")) {
+            
+            for (int i = 0; i < a.getEr().size(); i++) {
+                aux = "siguientes_" + a.getEr().get(i).getNombre();
+
+                if (aux.equals(tm.getUserObject().toString())) {
+                    
+                    ImageIcon icono = new ImageIcon("src\\" + aux + ".png");
+                    icono.getImage().flush();
+                    image.setIcon(icono);
+                    image.revalidate();
+                    image.validate();
+                    image.repaint();
+
+                    jScrollPane1.revalidate();
+                    jScrollPane1.validate();
+                    jScrollPane1.repaint();
+                    return;
+                }
+            }
+        } else if (tm.getUserObject().toString().startsWith("transicion_")) {
+            
+            for (int i = 0; i < a.getEr().size(); i++) {
+                aux = "transicion_" + a.getEr().get(i).getNombre();
+                
+                if (aux.equals(tm.getUserObject().toString())) {
+                   
+                    ImageIcon icono = new ImageIcon("src\\" + aux + ".png");
+                    icono.getImage().flush();
+                    image.setIcon(icono);
+                    image.revalidate();
+                    image.validate();
+                    image.repaint();
+
+                    jScrollPane1.revalidate();
+                    jScrollPane1.validate();
+                    jScrollPane1.repaint();
+                    return;
+                }
+            }
+        } else if (tm.getUserObject().toString().startsWith("dfa_")) {
+            
+            for (int i = 0; i < a.getEr().size(); i++) {
+                aux = "dfa_" + a.getEr().get(i).getNombre();
+
+                if (aux.equals(tm.getUserObject().toString())) {
+                    
+                    ImageIcon icono = new ImageIcon("src\\" + aux + ".png");
+                    icono.getImage().flush();
+                    image.setIcon(icono);
+                    image.revalidate();
+                    image.validate();
+                    image.repaint();
+
+                    jScrollPane1.revalidate();
+                    jScrollPane1.validate();
+                    jScrollPane1.repaint();
+                    return;
+                }
+            }
+        } else if (tm.getUserObject().toString().equals("Tabla de Siguientes")) {
+            JOptionPane.showMessageDialog(null, "Seleccione una imagen");
+        } else if (tm.getUserObject().toString().equals("Arboles")) {
+            JOptionPane.showMessageDialog(null, "Seleccione una imagen");
+        } else if (tm.getUserObject().toString().equals("AFD")) {
+            JOptionPane.showMessageDialog(null, "Seleccione una imagen");
+        } else if (tm.getUserObject().toString().equals("Tabla de Trasiciones")) {
+            JOptionPane.showMessageDialog(null, "Seleccione una imagen");
+        } else if (tm.getUserObject().toString().equals("Automatas")) {
+            JOptionPane.showMessageDialog(null, "Seleccione Siguientes, arboles, dfa o transiciones");
+
+        }
+    }//GEN-LAST:event_jSelectIActionPerformed
 
     /**
      * @param args the command line arguments
@@ -359,17 +490,9 @@ public class Principal extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
+    private javax.swing.JLabel image;
     private javax.swing.JButton jButton3;
-    private javax.swing.JComboBox jComboBox1;
-    private javax.swing.JComboBox jComboBox2;
-    private javax.swing.JComboBox jComboBox3;
-    private javax.swing.JComboBox jComboBox4;
-    private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel3;
-    private javax.swing.JLabel jLabel4;
+    private javax.swing.JButton jG;
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu2;
     private javax.swing.JMenu jMenu3;
@@ -380,7 +503,12 @@ public class Principal extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JScrollPane jScrollPane3;
+    private javax.swing.JScrollPane jScrollPane4;
+    private javax.swing.JButton jSelectI;
     private javax.swing.JTextArea jTAArchivo;
     private javax.swing.JTextArea jTextConsola;
+    private javax.swing.JTree jTree1;
     // End of variables declaration//GEN-END:variables
+
 }

@@ -114,7 +114,12 @@ public class Arbol {
         } else {
             nodo += "| { N";
         }
-        nodo += "| " + Raiz.getTok().getLexema();
+        if(Raiz.getTok().getLexema().equals("|")){
+            nodo += "| \\" + Raiz.getTok().getLexema();
+        }else{
+            nodo += "| " + Raiz.getTok().getLexema();
+        }
+        
         nodo += "|" + Raiz.getId() + " } |";
         for (int i = 0; i < Raiz.getUltimos().size(); i++) {
             if (i == 0) {
@@ -123,11 +128,12 @@ public class Arbol {
                 nodo += "," + Raiz.getUltimos().get(i);
             }
         }
+        
         return Retorno + Raiz.getGraficar() + "[shape=record label=\" " + nodo + " \" ];\n";
 
     }
 
-    private String graficar() {
+    public String graficar() {
         if (root == null) {
             return "\n\n";
         } else {
@@ -164,7 +170,12 @@ public class Arbol {
             }
         }
         try {
-            Process p = Runtime.getRuntime().exec("cmd /c dot.exe -Tpng src\\arbol_" + i + ".dot -o src\\arbol_" + i + ".png");
+             ProcessBuilder pbuild = new ProcessBuilder("dot", "-Tpng", "-o", "src\\arbol_"+i+".png", "src\\arbol_"+i+".dot");
+            pbuild.redirectErrorStream(true);
+            pbuild.start();
+            
+            
+            
 //            Process pa = Runtime.getRuntime().exec("cmd /c src\\Imagenes\\AVLTree.png");
         } catch (Exception e2) {
             e2.printStackTrace();
@@ -440,7 +451,7 @@ public class Arbol {
         PrintWriter pw = null;
         
         try {
-            fichero = new FileWriter("C:\\Practica 1\\dfa_" + name + ".dot");
+            fichero = new FileWriter("src\\dfa_" + name + ".dot");
             
             pw = new PrintWriter(fichero);
 
@@ -465,14 +476,14 @@ public class Arbol {
             }
         }
         try {//dot.exe -Tpng src\\dfa_ExpReg1.dot -o src\\dfa_ExpReg1.png
-            Thread.sleep(500); 
-            Runtime rt = Runtime.getRuntime();
-            System.out.println(name);
-            rt.gc();
-            rt.exec("cmd /c dot.exe -Tjpg C:\\Practica 1\\dfa_" + name + ".dot -o C:\\Practica 1\\dfa_" + name + ".jpg");
+            
+            ProcessBuilder pbuild = new ProcessBuilder("dot", "-Tpng", "-o", "src\\dfa_"+name+".png", "src\\dfa_"+name+".dot");
+            pbuild.redirectErrorStream(true);
+            pbuild.start();
+            
             
             //Process p = Runtime.getRuntime().exec("cmd /c dot.exe -Tpng src\\dfa_" + i + ".dot -o src\\dfa_" + i + ".png");
-            Thread.sleep(500); 
+            
             
 //            Process pa = Runtime.getRuntime().exec("cmd /c src\\Imagenes\\AVLTree.png");
         } catch (Exception e2) {

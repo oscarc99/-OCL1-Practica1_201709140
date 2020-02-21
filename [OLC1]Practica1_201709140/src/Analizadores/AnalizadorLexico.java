@@ -455,8 +455,34 @@ public class AnalizadorLexico {
     }
     
     public void analizarLex(){
+        int estado= 0;
+        int maxEstado =0;
         for (int i = 0; i < lexemas.size(); i++) {
-            
+            for (int j = 0; j < er.size(); j++) {
+                if(er.get(i).getNombre().equals(lexemas.get(i).getIdentificador())){
+                    maxEstado = er.get(i).getTree().getTransicion().getSize();
+                    //ESTOY EN LA ER QUE ESPECIFICAN Analizo    
+                    char[] chars = lexemas.get(i).getCadena().toCharArray();
+                    //Cada char lo verifico
+                    for (int k = 0; k < chars.length; k++) {
+                        //Estoy con el primer char
+                        for (int l = 0; l < er.get(i).getTree().getTransicion().get_element_at(estado).getTransicion().length; l++) {
+                            //if(er.get(i).getTree().getTransicion().get_element_at(estado).getTransicion()[l])
+                        }
+
+                                                   
+                        
+                        
+                        
+                        
+                        
+                    }
+                    
+                    
+                    
+                }
+                
+            }
         }
     }
 

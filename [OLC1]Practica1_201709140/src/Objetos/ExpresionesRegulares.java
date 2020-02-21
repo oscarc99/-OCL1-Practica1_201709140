@@ -68,7 +68,7 @@ public class ExpresionesRegulares {
         FileWriter fichero = null;
         PrintWriter pw = null;
         try {
-            fichero = new FileWriter("src\\Imagenes\\siguientes_" + nombre + ".dot");
+            fichero = new FileWriter("src\\siguientes_" + nombre + ".dot");
 
             pw = new PrintWriter(fichero);
 
@@ -92,9 +92,11 @@ public class ExpresionesRegulares {
             }
         }
         try {
-            Process p = Runtime.getRuntime().exec("cmd /c dot.exe -Tpng src\\Imagenes\\siguientes_" + nombre + ".dot -o src\\Imagenes\\siguientes_" + nombre + ".png");
-
-            Process pa = Runtime.getRuntime().exec("cmd /c src\\Imagenes\\siguientes_" + nombre + ".png");
+             ProcessBuilder pbuild = new ProcessBuilder("dot", "-Tpng", "-o", "src\\siguientes_"+nombre+".png", "src\\siguientes_"+nombre+".dot");
+            pbuild.redirectErrorStream(true);
+            pbuild.start();
+            
+            
         } catch (Exception e2) {
             e2.printStackTrace();
         }
@@ -140,7 +142,7 @@ public class ExpresionesRegulares {
         FileWriter fichero = null;
         PrintWriter pw = null;
         try {
-            fichero = new FileWriter("src\\Imagenes\\transicion_" + nombre + ".dot");
+            fichero = new FileWriter("src\\transicion_" + nombre + ".dot");
 
             pw = new PrintWriter(fichero);
 
@@ -164,9 +166,12 @@ public class ExpresionesRegulares {
             }
         }
         try {
-            Process p = Runtime.getRuntime().exec("cmd /c dot.exe -Tpng src\\Imagenes\\transicion_" + nombre + ".dot -o src\\Imagenes\\transicion_" + nombre + ".png");
+            ProcessBuilder pbuild = new ProcessBuilder("dot", "-Tpng", "-o", "src\\transicion_"+nombre+".png", "src\\transicion_"+nombre+".dot");
+            pbuild.redirectErrorStream(true);
+            pbuild.start();
+            
 
-            Process pa = Runtime.getRuntime().exec("cmd /c src\\Imagenes\\transicion_" + nombre + ".png");
+            
         } catch (Exception e2) {
             e2.printStackTrace();
         }
