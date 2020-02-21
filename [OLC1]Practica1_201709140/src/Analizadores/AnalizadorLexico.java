@@ -264,6 +264,7 @@ public class AnalizadorLexico {
         guardarConjuntos();
         guardarER();
         guardarLex();
+        
     }
 
     private boolean isDigit(char c) {
@@ -448,8 +449,14 @@ public class AnalizadorLexico {
         for (int i = 0; i < salida.size(); i++) {
             if(salida.get(i).getToken()==11 && salida.get(i-1).getToken()==9){
                 
-                lexemas.add(new Lexema(salida.get(i),salida.get(i-2).getLexema()));
+                lexemas.add(new Lexema(salida.get(i).getLexema(),salida.get(i-2).getLexema()));
             }
+        }
+    }
+    
+    public void analizarLex(){
+        for (int i = 0; i < lexemas.size(); i++) {
+            
         }
     }
 

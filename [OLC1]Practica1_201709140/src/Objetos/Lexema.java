@@ -11,27 +11,28 @@ package Objetos;
  */
 public class Lexema {
 
-    Token token;
+    String cadena;
     String identificador;
+    boolean estado=false;
 
     public Lexema() {
     }
 
-    public Lexema(Token token, String identificador) {
-        this.token = token;
+    public Lexema(String token, String identificador) {
+        this.cadena = token;
         this.identificador = identificador;
     }
 
-    public Token getToken() {
-        return token;
+    public String getToken() {
+        return cadena;
     }
 
     public String getIdentificador() {
         return identificador;
     }
 
-    public void setToken(Token token) {
-        this.token = token;
+    public void setToken(String token) {
+        this.cadena = token;
     }
 
     public void setIdentificador(String identificador) {

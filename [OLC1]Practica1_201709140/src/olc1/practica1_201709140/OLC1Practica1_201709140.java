@@ -24,9 +24,10 @@ int a;
      * @param args the command line arguments
      */
     public static void main(String[] args) throws IOException {
-        System.out.println("MIERDA");
-        s=0;
-        System.out.println(a);
+        
+        
+        Principal v = new Principal();
+        v.setVisible(true); 
     }
     
 }

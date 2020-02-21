@@ -4,6 +4,7 @@ import EDD.Nodo;
 import Objetos.Estado;
 import Objetos.Token;
 import java.io.FileWriter;
+import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.util.LinkedList;
 
@@ -16,15 +17,15 @@ public class Arbol {
     Lista siguientes = new Lista();
     List transicion = new List();
     Nodo root;
-    
+
     Lista lista;//Tokens del arbol
     private int estados = 0;
     private int contador = 1;
-    private int ayuda=0;
+    private int ayuda = 0;
 
     public Lista getSiguientes() {
         return siguientes;
-        
+
     }
 
     public List getTransicion() {
@@ -92,37 +93,37 @@ public class Arbol {
 
         if (Raiz.getLeft() != null) {
             Retorno += Graph(Raiz.getLeft());
-            Retorno += Raiz.getGraficar()+ "->" + Raiz.getLeft().getGraficar()+ "; \n";
+            Retorno += Raiz.getGraficar() + "->" + Raiz.getLeft().getGraficar() + "; \n";
         }
         if (Raiz.getRight() != null) {
             Retorno += Graph(Raiz.getRight());
-            Retorno += Raiz.getGraficar()+ "->" + Raiz.getRight().getGraficar() + "; \n";
+            Retorno += Raiz.getGraficar() + "->" + Raiz.getRight().getGraficar() + "; \n";
         }
-        String nodo ="";
+        String nodo = "";
         //Agrego primeros
         for (int i = 0; i < Raiz.getPrimeros().size(); i++) {
-            if(i == 0){
-                nodo +=  Raiz.getPrimeros().get(i); 
-            }else{
-                nodo +=","+  Raiz.getPrimeros().get(i); 
+            if (i == 0) {
+                nodo += Raiz.getPrimeros().get(i);
+            } else {
+                nodo += "," + Raiz.getPrimeros().get(i);
             }
-            
+
         }
-        if(Raiz.isAnulable()){
-            nodo+="| { A";
-        }else{
-            nodo+="| { N";
+        if (Raiz.isAnulable()) {
+            nodo += "| { A";
+        } else {
+            nodo += "| { N";
         }
-        nodo+= "| "+Raiz.getTok().getLexema();
-        nodo += "|"+ Raiz.getId()+" } |";
+        nodo += "| " + Raiz.getTok().getLexema();
+        nodo += "|" + Raiz.getId() + " } |";
         for (int i = 0; i < Raiz.getUltimos().size(); i++) {
-            if(i == 0){
-                nodo +=  Raiz.getUltimos().get(i); 
-            }else{
-                nodo +=","+  Raiz.getUltimos().get(i); 
+            if (i == 0) {
+                nodo += Raiz.getUltimos().get(i);
+            } else {
+                nodo += "," + Raiz.getUltimos().get(i);
             }
         }
-        return Retorno + Raiz.getGraficar() + "[shape=record label=\" " +nodo+" \" ];\n";
+        return Retorno + Raiz.getGraficar() + "[shape=record label=\" " + nodo + " \" ];\n";
 
     }
 
@@ -405,48 +406,48 @@ public class Arbol {
         }
 
     }
-    
-    public String lexema(int a){
+
+    public String lexema(int a) {
         for (int i = 0; i < siguientes.size(); i++) {
-            if(siguientes.get(i).getId() == a){
+            if (siguientes.get(i).getId() == a) {
                 return siguientes.get(i).getLexema();
             }
         }
         return "";
     }
-    
-    
-    private void g(){
-        if (root!= null){
-            ayuda=0;
+
+    private void g() {
+        if (root != null) {
+            ayuda = 0;
             g(root);
         }
     }
-    
+
     private void g(Nodo root) {
-        
-        if(root != null){
+
+        if (root != null) {
             g(root.getLeft());
             g(root.getRight());
-            root.setGraficar("N"+ayuda);
+            root.setGraficar("N" + ayuda);
             ayuda++;
-                        
+
         }
-        
+
     }
-    
-    public void reporteDFA(String i){
+
+    public void reporteDFA(String name) { 
         FileWriter fichero = null;
         PrintWriter pw = null;
+        
         try {
-            fichero = new FileWriter("src\\dfa_" + i + ".dot");
-
+            fichero = new FileWriter("C:\\Practica 1\\dfa_" + name + ".dot");
+            
             pw = new PrintWriter(fichero);
 
             pw.println("digraph G { \n");
             pw.println("nodesep=0.8;\n");
             pw.println("ranksep=0.5;\n");
-            
+
             pw.println(DFA());
             pw.println("}\n");
 
@@ -463,52 +464,64 @@ public class Arbol {
                 e2.printStackTrace();
             }
         }
-        try {
-            Process p = Runtime.getRuntime().exec("cmd /c dot.exe -Tpng src\\dfa_" + i + ".dot -o src\\dfa_" + i + ".png");
+        try {//dot.exe -Tpng src\\dfa_ExpReg1.dot -o src\\dfa_ExpReg1.png
+            Thread.sleep(500); 
+            Runtime rt = Runtime.getRuntime();
+            System.out.println(name);
+            rt.gc();
+            rt.exec("cmd /c dot.exe -Tjpg C:\\Practica 1\\dfa_" + name + ".dot -o C:\\Practica 1\\dfa_" + name + ".jpg");
+            
+            //Process p = Runtime.getRuntime().exec("cmd /c dot.exe -Tpng src\\dfa_" + i + ".dot -o src\\dfa_" + i + ".png");
+            Thread.sleep(500); 
+            
 //            Process pa = Runtime.getRuntime().exec("cmd /c src\\Imagenes\\AVLTree.png");
         } catch (Exception e2) {
             e2.printStackTrace();
         }
     }
-    
-    private String DFA(){
-        String dot ="";
-        String nodos="";
-        boolean aceptacion =false;
-        String dir="";
+
+    private String DFA() {
+        String dot = "";
+        String nodos = "";
+        boolean aceptacion = false;
+        String dir = "";
         for (int i = 0; i < transicion.getSize(); i++) {
             for (int j = 0; j < transicion.get_element_at(i).getTransicion().length; j++) {
-                for (int k = 0; k < transicion.get_element_at(i).getTransicion()[j].size() ; k++) {
-                    if(transicion.get_element_at(i).getTransicion()[j].get(k)== siguientes.size() ){
-                    aceptacion =true;
+                if(transicion.get_element_at(i).getTransicion()[j] != null){
+                    for (int k = 0; k < transicion.get_element_at(i).getTransicion()[j].size(); k++) {
+                    if (transicion.get_element_at(i).getTransicion()[j].get(k) == siguientes.size()) {
+                        aceptacion = true;
                     }
                 }
-
                     
                 }
+                
+
             }
-            if(aceptacion){
-                nodos += transicion.get_element_at(i).getId() +"[shape= \"doublecircle\"  label = \" "+transicion.get_element_at(i).getId()+"\" ] \n";
-            }else{
-                nodos += transicion.get_element_at(i).getId() +"[shape= \"circle\"  label = \" "+transicion.get_element_at(i).getId()+"\" ] \n";
+            if (aceptacion) {
+                nodos += transicion.get_element_at(i).getId() + "[shape= \"doublecircle\"  label = \" " + transicion.get_element_at(i).getId() + "\" ] \n";
+            } else {
+                nodos += transicion.get_element_at(i).getId() + "[shape= \"circle\"  label = \" " + transicion.get_element_at(i).getId() + "\" ] \n";
             }
             aceptacion = false;
             for (int j = 0; j < transicion.get_element_at(i).getTransicion().length; j++) {
+                if(transicion.get_element_at(i).getTransicion()[j] != null){
+                    if(i==transicion.getSize()-1 && j==0){
+                        
+                    }else{
+                        for (int k = 0; k < transicion.get_element_at(i).getTransicion()[j].size(); k++) {
+                        dir += transicion.get_element_at(i).getId() +"-> S"+j +"[label =\" "+transicion.get_element_at(i).getTransicion()[j].get(k)+"\"]; \n";
+                    }
+                    }
+                    
+                }
                 
-                dir +="";
                 //estado(LinkedList) METODO SABER EL ESTADO ID(int)
-                
-                
+
             }
-            
-            
+
         }
-        
-        
-        dot += nodos+ dir;
+        dot +=nodos +dir;
         return dot;
     }
-    
-    
-    
 }
