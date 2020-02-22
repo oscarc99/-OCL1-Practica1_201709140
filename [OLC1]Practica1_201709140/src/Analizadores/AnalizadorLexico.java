@@ -36,6 +36,14 @@ public class AnalizadorLexico {
         return er;
     }
 
+    public LinkedList<Lexema> getLexemas() {
+        return lexemas;
+    }
+
+    public void setLexemas(LinkedList<Lexema> lexemas) {
+        this.lexemas = lexemas;
+    }
+
     public AnalizadorLexico() {
     errores = new LinkedList<Error>();
        salida = new LinkedList<Token>();

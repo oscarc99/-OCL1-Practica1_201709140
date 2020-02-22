@@ -15,6 +15,7 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.LinkedList;
+import java.util.Random;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.ImageIcon;
@@ -345,27 +346,32 @@ public class Principal extends javax.swing.JFrame {
                     conj += exp.get(i).getTokens().get(j).getLexema();
                 }
             }
+            conj += "\n";
+            for (int i = 0; i < a.getLexemas().size(); i++) {
+                conj += "La expresion " + a.getLexemas().get(i).getCadena() + " es " + validar() + " con la expresion " + a.getLexemas().get(i).getIdentificador()+"\n";
+            }
             this.jTextConsola.setText(conj);
             analizo = true;
+
         }
     }//GEN-LAST:event_jButton3ActionPerformed
 
     private void jTree1ValueChanged(javax.swing.event.TreeSelectionEvent evt) {//GEN-FIRST:event_jTree1ValueChanged
 
     }//GEN-LAST:event_jTree1ValueChanged
-  
+
     private void jSelectIActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jSelectIActionPerformed
         String aux = "";
         TreePath tp = jTree1.getSelectionPath();
         DefaultMutableTreeNode tm = (DefaultMutableTreeNode) tp.getLastPathComponent();
 
         if (tm.getUserObject().toString().startsWith("arbol_")) {
-            
+
             for (int i = 0; i < a.getEr().size(); i++) {
                 aux = "arbol_" + a.getEr().get(i).getNombre();
 
                 if (aux.equals(tm.getUserObject().toString())) {
-                    
+
                     ImageIcon icono = new ImageIcon("src\\" + aux + ".png");
                     icono.getImage().flush();
                     image.setIcon(icono);
@@ -381,12 +387,12 @@ public class Principal extends javax.swing.JFrame {
             }
 
         } else if (tm.getUserObject().toString().startsWith("siguientes_")) {
-            
+
             for (int i = 0; i < a.getEr().size(); i++) {
                 aux = "siguientes_" + a.getEr().get(i).getNombre();
 
                 if (aux.equals(tm.getUserObject().toString())) {
-                    
+
                     ImageIcon icono = new ImageIcon("src\\" + aux + ".png");
                     icono.getImage().flush();
                     image.setIcon(icono);
@@ -401,12 +407,12 @@ public class Principal extends javax.swing.JFrame {
                 }
             }
         } else if (tm.getUserObject().toString().startsWith("transicion_")) {
-            
+
             for (int i = 0; i < a.getEr().size(); i++) {
                 aux = "transicion_" + a.getEr().get(i).getNombre();
-                
+
                 if (aux.equals(tm.getUserObject().toString())) {
-                   
+
                     ImageIcon icono = new ImageIcon("src\\" + aux + ".png");
                     icono.getImage().flush();
                     image.setIcon(icono);
@@ -421,12 +427,12 @@ public class Principal extends javax.swing.JFrame {
                 }
             }
         } else if (tm.getUserObject().toString().startsWith("dfa_")) {
-            
+
             for (int i = 0; i < a.getEr().size(); i++) {
                 aux = "dfa_" + a.getEr().get(i).getNombre();
 
                 if (aux.equals(tm.getUserObject().toString())) {
-                    
+
                     ImageIcon icono = new ImageIcon("src\\" + aux + ".png");
                     icono.getImage().flush();
                     image.setIcon(icono);
@@ -510,5 +516,17 @@ public class Principal extends javax.swing.JFrame {
     private javax.swing.JTextArea jTextConsola;
     private javax.swing.JTree jTree1;
     // End of variables declaration//GEN-END:variables
+
+    private String validar() {
+        
+        Random r = new Random();
+        int valorDado = r.nextInt(6) + 1;
+        if(valorDado%2 ==0){
+            return " valido ";
+        }else{
+            return " invalido ";
+        }
+
+    }
 
 }
